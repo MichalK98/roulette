@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 class Roulette extends Component {
     state = {
         roulette : {
-            roulette_numbers : [0, 1, 8, 2, 9, 3, 10, 4, 11, 5, 12, 6, 13, 7, 14],
-            // 0: green, 1-7: red, 8-14: black
+            roulette_numbers : [14, 7, 13, 6, 12, 5, 11, 4, 10, 3, 9, 2, 8, 1, 0],
         }
     };
 
@@ -12,51 +11,46 @@ class Roulette extends Component {
         console.log('init');
 
         let roulette_wheel = document.getElementById('roulette-wheel');
+        let roulette_result = document.getElementById('roulette-result');
 
-        this.start(roulette_wheel);
+        this.start(roulette_wheel, roulette_result);
     }
 
-    start = (roulette_wheel) => {
+    start = (roulette_wheel, roulette_result) => {
         console.log('start');
 
         this.wheel(roulette_wheel, "rotate(6800deg)", "all ease-in-out 10s");
-        setTimeout(this.spin, 8000, roulette_wheel);
+        setTimeout(this.spin, 8000, roulette_wheel, roulette_result);
     }
 
-    spin = (roulette_wheel) => {
+    spin = (roulette_wheel, roulette_result) => {
         console.log('spin');
 
         let random_deg = Math.random() * (7560 - 7200) + 7200;
 
         this.wheel(roulette_wheel, "rotate(" + random_deg + "deg)", "all ease-out 15s");
-        setTimeout(this.result, 15000, roulette_wheel, random_deg);
+        setTimeout(this.result, 15000, roulette_wheel, roulette_result, random_deg);
     }
     
-    result = (roulette_wheel, random_deg) => {
+    result = (roulette_wheel, roulette_result, random_deg) => {
         console.log('result');
 
         let reset_deg = random_deg - 7200;
 
         let roulette_numbers = this.state.roulette.roulette_numbers;
+        
+        let index = reset_deg / 24;
 
-        console.log(roulette_numbers);
+        roulette_result.innerHTML = roulette_numbers[Math.trunc(index)];
 
-
-        let min = roulette_numbers[0];
-        console.log(min);
-
-        if ((min <= reset_deg) && (reset_deg <= max)) {
-            console.log('yes');
-        }
-
-        setTimeout(this.reset, 9000, roulette_wheel, reset_deg);
+        setTimeout(this.reset, 9000, roulette_wheel, roulette_result, reset_deg);
     }
     
-    reset = (roulette_wheel, reset_deg) => {
+    reset = (roulette_wheel, roulette_result, reset_deg) => {
         console.log('reset');
 
         this.wheel(roulette_wheel, "rotate(" + reset_deg + "deg)", "all ease-in-out 0s");
-        setTimeout(this.start, 4000, roulette_wheel);
+        setTimeout(this.start, 4000, roulette_wheel, roulette_result);
     }
 
     wheel = (roulette_wheel, rotation, animation) => {
@@ -64,8 +58,6 @@ class Roulette extends Component {
 
         roulette_wheel.style.transform = rotation;
         roulette_wheel.style.transition = animation;
-
-        console.log(rotation, animation);
     }
 
     render() {
@@ -73,7 +65,7 @@ class Roulette extends Component {
             <div className="roulette">
                 <div className="roulette-shadow"></div>
                 <div className="roulette-arrow"></div>
-                <div className="roulette-eye"><span className="roulette-text">2</span></div>
+                <div className="roulette-eye"><span className="roulette-result" id="roulette-result">0</span></div>
                 <div className="roulette-wheel" id="roulette-wheel"></div>
                 <button onClick={this.init}>Start</button>
             </div>
