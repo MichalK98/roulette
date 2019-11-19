@@ -24,14 +24,14 @@
         right: -5px;
         transform: translate(0%, -50%);
     }
-    
+
     .roulette-arrow {
         border-style: solid;
         border-width: 20px 20px 20px 0px;
         border-color: transparent rgb(246, 228, 68);
         z-index: 1;
     }
-    
+
     .roulette-shadow {
         width: 0;
         height: 125px;
@@ -48,8 +48,8 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        
-        .roulette-result {
+
+        #roulette-result {
             color: white;
             font-size: 60px;
             top: 50%;
