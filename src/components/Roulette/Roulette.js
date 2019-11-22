@@ -4,12 +4,13 @@ class Roulette extends Component {
     state = {
         roulette : {
             roulette_numbers : [14, 7, 13, 6, 12, 5, 11, 4, 10, 3, 9, 2, 8, 1, 0],
-        }
+        },
+        roulette_number : 0,
+        roulette_color : 'color-green',
     };
 
+    
     init = () => {
-        //console.log('init');
-
         let roulette_wheel = document.getElementById('roulette-wheel');
         let roulette_result = document.getElementById('roulette-result');
 
@@ -17,15 +18,11 @@ class Roulette extends Component {
     }
 
     start = (roulette_wheel, roulette_result) => {
-        //console.log('start');
-
         this.wheel(roulette_wheel, "rotate(6800deg)", "all ease-in-out 10s");
         setTimeout(this.spin, 8000, roulette_wheel, roulette_result);
     }
 
     spin = (roulette_wheel, roulette_result) => {
-        //console.log('spin');
-
         let random_deg = Math.random() * (7560 - 7200) + 7200;
 
         this.wheel(roulette_wheel, "rotate(" + random_deg + "deg)", "all ease-out 15s");
@@ -33,38 +30,30 @@ class Roulette extends Component {
     }
     
     result = (roulette_wheel, roulette_result, random_deg) => {
-        //console.log('result');
-
         let reset_deg = random_deg - 7200;
         
         let index = reset_deg / 24;
 
-        let roulette_numbers = this.state.roulette.roulette_numbers[Math.trunc(index)];
-
-        roulette_result.innerHTML = roulette_numbers;
-
-        if (roulette_numbers == 0) {
-            roulette_result.className = "color-green";
-            // roulette eye instend of roulette resault
-        } else if (roulette_numbers <= 7) {
-            roulette_result.className = "color-red";
+        let roulette_number = this.state.roulette.roulette_numbers[Math.trunc(index)];
+        
+        if (roulette_number == 0) {
+            this.setState({roulette_color: 'color-green'});
+        } else if (roulette_number <= 7) {
+            this.setState({roulette_color: 'color-red'});
         } else {
-            roulette_result.className = "color-black";
+            this.setState({roulette_color: 'color-black'});
         }
+        this.setState({roulette_number: roulette_number});
 
         setTimeout(this.reset, 9000, roulette_wheel, roulette_result, reset_deg);
     }
     
     reset = (roulette_wheel, roulette_result, reset_deg) => {
-        //console.log('reset');
-
         this.wheel(roulette_wheel, "rotate(" + reset_deg + "deg)", "all ease-in-out 0s");
         setTimeout(this.start, 4000, roulette_wheel, roulette_result);
     }
 
     wheel = (roulette_wheel, rotation, animation) => {
-        //console.log('wheel');
-
         roulette_wheel.style.transform = rotation;
         roulette_wheel.style.transition = animation;
     }
@@ -74,7 +63,9 @@ class Roulette extends Component {
             <div className="roulette">
                 <div className="roulette-shadow"></div>
                 <div className="roulette-arrow"></div>
-                <div className="roulette-eye"><span id="roulette-result">0</span></div>
+                <div id="roulette-eye" className={this.state.roulette_color}>
+                    <span id="roulette-result">{this.state.roulette_number}</span>
+                </div>
                 <div className="roulette-wheel" id="roulette-wheel"></div>
                 <button onClick={this.init}>Start</button>
             </div>
