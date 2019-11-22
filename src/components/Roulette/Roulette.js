@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Bulleye from '../Bulleye';
 
 class Roulette extends Component {
     state = {
@@ -7,9 +8,17 @@ class Roulette extends Component {
         },
         roulette_number : 0,
         roulette_color : 'color-green',
+        // Move to props and dispatch action
     };
 
-    
+
+    // Fixa bilden ej centrerad snurtrar snett
+    //------------------------
+    // IDIOT KOMPONENTER ENDAST SKRIVA UT DATA!
+    // INGA UTRÄKNINGAR OSV
+    // tips kolla chat appen
+    //------------------------
+
     init = () => {
         let roulette_wheel = document.getElementById('roulette-wheel');
         let roulette_result = document.getElementById('roulette-result');
@@ -63,9 +72,7 @@ class Roulette extends Component {
             <div className="roulette">
                 <div className="roulette-shadow"></div>
                 <div className="roulette-arrow"></div>
-                <div id="roulette-eye" className={this.state.roulette_color}>
-                    <span id="roulette-result">{this.state.roulette_number}</span>
-                </div>
+                <Bulleye bulleye={this.state}/>
                 <div className="roulette-wheel" id="roulette-wheel"></div>
                 <button onClick={this.init}>Start</button>
             </div>
